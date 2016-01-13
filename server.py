@@ -5,11 +5,11 @@ app = Flask(__name__)
 
 okCmds = frozenset(["python"])
 
-@app.route('/<cmd>/<arg>/<model>/<mol>')
-def runCmd(cmd, arg, model, mol):
+@app.route('/<cmd>/<script>/<model>/<mol>')
+def runCmd(cmd, script, model, mol):
 
     if cmd in okCmds:
-        o = subprocess.check_output([cmd,arg, model, mol])
+        o = subprocess.check_output([cmd,script, model, mol])
         return ('<pre>' + o + '</pre>')
     else:
         return ( cmd + ' is not an ok command.' )
