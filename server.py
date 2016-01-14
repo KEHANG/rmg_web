@@ -34,6 +34,14 @@ def runCmd(cmd, script):
 def index():
   return render_template('index.html')
 
+@app.route('/find_molecule')
+def find_molecule():
+  return render_template('find_molecule.html')
+
+@app.route('/run_rmg_job')
+def run_rmg_job():
+  return render_template('run_rmg_job.html')
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80)
 
