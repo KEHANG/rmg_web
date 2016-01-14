@@ -6,7 +6,7 @@ from rmgpy.chemkin import loadChemkinFile, getSpeciesIdentifier
 from rmgpy.molecule.molecule import Molecule
 from rmgpy.molecule.draw import MoleculeDrawer
 
-mech = sys.argv[1]#'pdd_scratch_add20'
+mech = 'pdd_scratch_add20'
 path = os.path.abspath('./')
 chemkinPath= path + '/data/' + mech + '/chem.inp'
 dictionaryPath = path + '/data/' + mech + '/species_dictionary.txt'
@@ -33,7 +33,7 @@ for spec in species:
         except IndexError:
             raise OutputError("{0} species could not be drawn!".format(getSpeciesIdentifier(spec)))
 
-species_target = sys.argv[2]#'C=CC[CH]CCCCCCC'
+species_target = 'C=CC[CH]CCCCCCC'
 # search the target species in model
 mol_tgt = Molecule().fromSMILES(species_target)
 
