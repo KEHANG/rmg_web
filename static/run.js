@@ -6,12 +6,11 @@ $('document').ready( function() {
 });
 
 function renderResult(d,tStatus, jqxhr){
-    console.log(d);
+    $("#result")[0].innerHTML = d;
 }
 
 function click_send() {
     var baseUrl = "/python/test.py";
     dat = $('#input')[0].value;
-    console.log(dat);
     $.ajax(baseUrl, {'success':renderResult} );
 }

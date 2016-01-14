@@ -11,7 +11,7 @@ def runCmd(cmd, script):
     if cmd in okCmds:
     	print cmd, script
         o = subprocess.check_output([cmd,script])
-        return ('<pre>' + o + '</pre>')
+        return o
     else:
         return ( cmd + ' is not an ok command.' )
 
