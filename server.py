@@ -15,6 +15,22 @@ def runCmd(cmd, script):
     else:
         return ( cmd + ' is not an ok command.' )
 
+@app.route('/<cmd>/<script>/<input_file>')
+def runCmdWithInput(cmd, script, input_file):
+
+    if cmd in okCmds and script == "rmg":
+    	script = "temp/rmg.py"
+    	input_file = "temp/input.py"
+        o = subprocess.call([cmd, script, input_file])
+        if o == 0:
+        	tail_log = subprocess.check_output(["tail", "-5", "temp/RMG.log"])
+        	print tail_log
+        	return tail_log
+        else:
+        	return "Need your effort to make it right!!"
+    else:
+        return ( cmd + ' is not an ok command.' )
+
 # chem_args = parse(inputBytes)      # Bytes
 # chem_ret_val = fullrun(chem_args)  # Data
 # # chem_out = toString(chem_ret_val)  # Bytes
