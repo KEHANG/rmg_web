@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, g
 import os
 import subprocess
 app = Flask(__name__)
@@ -58,6 +58,25 @@ def find_molecule():
 def run_rmg_job():
   return render_template('run_rmg_job.html')
 
+def connect_to_database():
+    with open("settings", "r") as f:
+        line = f.readline()
+        if not line:
+            print "Warning: Database connection info incomplete!"
+        else:
+            pwd = line
+    conn = psycopg2.connect(database='postgres', user='postgres', host='localhost', password=pwd)
+    return conn
+
 if __name__ == "__main__":
+    import psycopg2
+    try:
+        with app.app_context():
+            conn = connect_to_database()
+            g._database = conn
+            print "connected!"
+    except:
+        print "I am unable to connect to the database"   
     app.run(host="0.0.0.0", port=80)
+    
 
