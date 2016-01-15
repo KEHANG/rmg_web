@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, g
 import os
 import subprocess
+import psycopg2
 app = Flask(__name__)
 
 okCmds = frozenset(["python"])
@@ -105,7 +106,6 @@ def connect_to_database():
     return conn
 
 if __name__ == "__main__":
-    import psycopg2
     try:
         with app.app_context():
             conn = connect_to_database()
