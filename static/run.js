@@ -15,9 +15,9 @@ function search_mol() {
     $.ajax(baseUrl, {'success':renderResult} );
 }
 
-function run_job() {
+function run_job(id) {
 	$("#result")[0].innerHTML = "Waiting for result...";
-    var baseUrl = "/python/rmg/input.py";
+    var baseUrl = "/python/rmg/input.py/"+id;
     $.ajax(baseUrl, {'success':renderResult} );
 }
 
@@ -30,6 +30,7 @@ $("#input_form").submit(function(e){
         success: function(data){
             alert("Your job is to run shortly with id " + data);
             // run job
+            id = data;
             run_job(id);
         }
     })

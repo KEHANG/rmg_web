@@ -15,19 +15,33 @@ def runCmd(cmd, script):
     else:
         return ( cmd + ' is not an ok command.' )
 
-@app.route('/<cmd>/<script>/<input_file>')
-def runCmdWithInput(cmd, script, input_file):
+@app.route('/<cmd>/<script>/<input_file>/<id>')
+def runCmdWithInput(cmd, script, input_file, id):
 
     if cmd in okCmds and script == "rmg":
-    	script = "temp/rmg.py"
-    	input_file = "temp/input.py"
+        script = "temp/rmg.py"
+        input_file = "temp/input.py"
         o = subprocess.call([cmd, script, input_file])
         if o == 0:
-        	tail_log = subprocess.check_output(["tail", "-5", "temp/RMG.log"])
-        	print tail_log
-        	return tail_log
+            # crete file binary
+            f = open('temp/chemkin/chem.inp', 'rb')
+            data = psycopg2.Binary(f.read())
+            # connect to db and update the row with
+            # right id
+            conn = get_db()
+            cur = conn.cursor()
+            
+            cur.execute(
+            """UPDATE job_result SET result=%s WHERE id=%s
+             RETURNING id;""",
+            (data, id))
+            return_value = cur.fetchone()
+            conn.commit()
+            cur.close()
+
+            return "Please check your results with id {0}".format(id)
         else:
-        	return "Need your effort to make it right!!"
+            return "Need your effort to make it right!!"
     else:
         return ( cmd + ' is not an ok command.' )
 
