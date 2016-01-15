@@ -7,6 +7,10 @@ $('document').ready( function() {
 
 function renderResult(d,tStatus, jqxhr){
     $("#result")[0].innerHTML = d;
+    // TODO: put a link there
+    // so that once user hit the link
+    // server will retrieve the data file back to
+    // user.
 }
 
 function search_mol() {
