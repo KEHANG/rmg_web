@@ -12,14 +12,12 @@ function renderResult(d,tStatus, jqxhr){
 function search_mol() {
 	$("#result")[0].innerHTML = "Waiting for result...";
     var baseUrl = "/python/search_mol.py";
-    dat = $('#input')[0].value;
     $.ajax(baseUrl, {'success':renderResult} );
 }
 
 function run_job() {
 	$("#result")[0].innerHTML = "Waiting for result...";
     var baseUrl = "/python/rmg/input.py";
-    dat = $('#input')[0].value;
     $.ajax(baseUrl, {'success':renderResult} );
 }
 
@@ -32,9 +30,7 @@ $("#input_form").submit(function(e){
         success: function(data){
             alert("Your job is to run shortly with id " + data);
             // run job
-            $("#result")[0].innerHTML = "Waiting for result...";
-            var baseUrl = "/python/rmg/input.py";
-            $.ajax(baseUrl, {'success':renderResult} );
+            run_job(id);
         }
     })
 
