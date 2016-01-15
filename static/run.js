@@ -22,3 +22,21 @@ function run_job() {
     dat = $('#input')[0].value;
     $.ajax(baseUrl, {'success':renderResult} );
 }
+
+$("#input_form").submit(function(e){
+    // create job
+    $.ajax({
+        type: "POST",
+        url: "/run_rmg_job",
+        data: $("#input_form").serialize(),
+        success: function(data){
+            alert(data);
+            // run job
+            $("#result")[0].innerHTML = "Waiting for result...";
+            var baseUrl = "/python/rmg/input.py";
+            $.ajax(baseUrl, {'success':renderResult} );
+        }
+    })
+
+    e.preventDefault();
+})

@@ -54,9 +54,31 @@ def index():
 def find_molecule():
   return render_template('find_molecule.html')
 
-@app.route('/run_rmg_job')
+@app.route('/run_rmg_job', methods=['GET', 'POST'])
 def run_rmg_job():
-  return render_template('run_rmg_job.html')
+    if request.method == 'POST':
+        db = get_db()
+        # insert blank
+        print "get the db!"
+        cur = db.cursor()
+        cur.execute(
+     """INSERT INTO job_result 
+         VALUES (%s, %s, %s, null, TRUE)
+         RETURNING id;""",
+     ("5", request.form["job_name"], request.form["cmd"]))
+        return_value = cur.fetchone()
+        db.commit()
+
+        cur.close()
+        return "Your job is to run shortly with id " + str(return_value[0])
+    else:
+        return render_template('run_rmg_job.html')
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = connect_to_database()
+    return db
 
 def connect_to_database():
     with open("settings", "r") as f:
