@@ -5,8 +5,11 @@
         <link rel="stylesheet" href="static/default.css">
 </head>
     <body>
-        <input id="input" type="text" />
-        <input type="button" value="send" onclick="run_job()"/>
+        <form name="input_form" id="input_form">
+            <input name="job_name" id="job_name" type="text" />
+            <input name="cmd" id="cmd" type="text" />
+            <input type="submit" value="send"/>
+        </form>
         <br/>
         <div id="result"></div>
         <script src="static/run.js"></script>
