@@ -70,7 +70,7 @@ def run_rmg_job():
         db.commit()
 
         cur.close()
-        return "Your job is to run shortly with id " + str(return_value[0])
+        return str(return_value[0])
     else:
         return render_template('run_rmg_job.html')
 

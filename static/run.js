@@ -30,7 +30,7 @@ $("#input_form").submit(function(e){
         url: "/run_rmg_job",
         data: $("#input_form").serialize(),
         success: function(data){
-            alert(data);
+            alert("Your job is to run shortly with id " + data);
             // run job
             $("#result")[0].innerHTML = "Waiting for result...";
             var baseUrl = "/python/rmg/input.py";
