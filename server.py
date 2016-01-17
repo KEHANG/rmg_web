@@ -1,8 +1,12 @@
-from flask import Flask, render_template, request, g, make_response
+from flask import Flask, render_template, request, g, make_response, redirect, url_for
 import os
 import subprocess
 import psycopg2
+from werkzeug import secure_filename
+
+ALLOWED_EXTENSIONS = set(['py'])
 app = Flask(__name__)
+app.config["UPLOAD_FOLDER"] = 'temp'
 
 okCmds = frozenset(["python"])
 
@@ -101,6 +105,19 @@ def run_rmg_job():
     else:
         return render_template('run_rmg_job.html')
 
+@app.route('/run_rmg_job_upload', methods=['GET', 'POST'])
+def run_rmg_job_upload():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('run_rmg_job', filename=filename))
+        else:
+            return "get no file!"
+    else:
+        return render_template('run_rmg_job.html')
+
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -116,6 +133,10 @@ def connect_to_database():
             pwd = line
     conn = psycopg2.connect(database='postgres', user='postgres', host='localhost', password=pwd)
     return conn
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 if __name__ == "__main__":
     try:

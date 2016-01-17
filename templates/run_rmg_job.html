@@ -5,6 +5,13 @@
         <link rel="stylesheet" href="static/default.css">
 </head>
     <body>
+        <h1>Upload Input File</h1>
+        <form name="input_file_form" id="input_file_form" action="" method=post enctype="multipart/form-data">
+          <p><input type="file" name="file">
+             <input type="submit" value="Upload">
+          </p>
+        </form>
+        <br/>
         <form name="input_form" id="input_form">
             Job name: <input name="job_name" id="job_name" type="text" />
             cmd: <input name="cmd" id="cmd" type="text" />
