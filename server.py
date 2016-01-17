@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, g
+from flask import Flask, render_template, request, g, make_response
 import os
 import subprocess
 import psycopg2
@@ -45,6 +45,18 @@ def runCmdWithInput(cmd, script, input_file, id):
             return "Need your effort to make it right!!"
     else:
         return ( cmd + ' is not an ok command.' )
+
+@app.route('/job_result/<id>')
+def showResultWithJobId(id):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("""SELECT result FROM job_result WHERE id=%s;""", (id,))
+    chem_file = cur.fetchone()[0]
+    cur.close()
+    response = make_response(str(chem_file))
+    response.headers["Content-Disposition"] = "attachment; filename=chem.inp"
+    return response
+  
 
 # chem_args = parse(inputBytes)      # Bytes
 # chem_ret_val = fullrun(chem_args)  # Data

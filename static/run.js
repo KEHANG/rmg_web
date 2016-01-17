@@ -7,7 +7,11 @@ $('document').ready( function() {
 
 function renderResult(d,tStatus, jqxhr){
     $("#progress")[0].innerHTML = "Done! Please check your results below.";
-    $("#result")[0].innerHTML = d;
+    id = d;
+    var resultUrl = "/job_result/" + id;
+
+    $("#resultLink")[0].href = resultUrl;
+    $("#resultLink")[0].innerHTML = "chem.inp";
     // TODO: put a link there
     // so that once user hit the link
     // server will retrieve the data file back to
