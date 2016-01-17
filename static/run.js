@@ -6,21 +6,24 @@ $('document').ready( function() {
 });
 
 function renderResult(d,tStatus, jqxhr){
+    $("#progress")[0].innerHTML = "Done! Please check your results below.";
     $("#result")[0].innerHTML = d;
     // TODO: put a link there
     // so that once user hit the link
     // server will retrieve the data file back to
     // user.
+
 }
 
 function search_mol() {
-	$("#result")[0].innerHTML = "Waiting for result...";
+	$("#progress")[0].innerHTML = "Waiting for result...";
     var baseUrl = "/python/search_mol.py";
     $.ajax(baseUrl, {'success':renderResult} );
+    
 }
 
 function run_job(id) {
-	$("#result")[0].innerHTML = "Waiting for result...";
+	$("#progress")[0].innerHTML = "Waiting for result...";
     var baseUrl = "/python/rmg/input.py/"+id;
     $.ajax(baseUrl, {'success':renderResult} );
 }

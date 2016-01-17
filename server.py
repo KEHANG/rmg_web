@@ -40,7 +40,7 @@ def runCmdWithInput(cmd, script, input_file, id):
             conn.commit()
             cur.close()
 
-            return "Please check your results with id {0}".format(id)
+            return id
         else:
             return "Need your effort to make it right!!"
     else:
