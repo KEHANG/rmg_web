@@ -20,7 +20,7 @@ def runCmd(cmd, script):
 def runCmdWithInput(cmd, script, input_file, id):
 
     if cmd in okCmds and script == "rmg":
-        script = "temp/rmg.py"
+        script = "scripts/rmg.py"
         input_file = "temp/input.py"
         o = subprocess.call([cmd, script, input_file])
         if o == 0:
