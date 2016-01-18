@@ -100,10 +100,10 @@ def run_rmg_job():
         print "get the db!"
         cur = db.cursor()
         cur.execute(
-     """INSERT INTO job_result 
-         VALUES (%s, %s, %s, null, TRUE)
+     """INSERT INTO job_result (name, cmd, result, public)
+         VALUES (%s, %s, null, TRUE)
          RETURNING id;""",
-     ("5", request.form["job_name"], request.form["cmd"]))
+     (request.form["job_name"], request.form["cmd"]))
         return_value = cur.fetchone()
         db.commit()
 
