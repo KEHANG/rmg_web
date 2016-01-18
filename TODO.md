@@ -1,12 +1,16 @@
 ## run_rmg_job
 
-- combine `run_rmg_job_upload` and `run_rmg_job` (TODO)
+- every some time to refresh `recent jobs` (TODO)
+
+- beautify `run_rmg_job` (Great thanks to Greg for making it)
+
+- combine `run_rmg_job_upload` and `run_rmg_job` (done)
 
 ## user work flow for rmg job running
 
-- create an job id (TODO)
+- create an job id (done)
 
-- upload a file to `temp+id` (TODO)
+- upload a file to `temp+id` (done)
 
 - store job id, cmd, job name info into db (done)
 
