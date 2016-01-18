@@ -88,6 +88,12 @@ def find_molecule():
 @app.route('/run_rmg_job', methods=['GET', 'POST'])
 def run_rmg_job():
     if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        else:
+            raise Exception("no file received!")
         db = get_db()
         # insert blank
         print "get the db!"
@@ -139,6 +145,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 if __name__ == "__main__":
+    app.debug = True
     try:
         with app.app_context():
             conn = connect_to_database()
