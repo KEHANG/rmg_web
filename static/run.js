@@ -33,18 +33,23 @@ function run_job(id) {
 }
 
 $("#input_form").submit(function(e){
+    
+    var formData = new FormData($(this)[0]);
     // create job
     $.ajax({
         type: "POST",
         url: "/run_rmg_job",
-        data: $("#input_form").serialize(),
+        data: formData,
+        async: true,
         success: function(data){
             alert("Your job is to run shortly with id " + data);
             // run job
             id = data;
             run_job(id);
-        }
+        },
+        cache: false,
+        contentType: false,
+        processData: false
     })
-
     e.preventDefault();
 })
