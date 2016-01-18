@@ -1,19 +1,48 @@
 <html>
     <head>
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+              integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+              crossorigin="anonymous"></link>
+        <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300'
+              rel='stylesheet' type='text/css'></link>
         <script src="http://code.jquery.com/jquery-2.2.0.min.js" ></script>
         </script>
         <link rel="stylesheet" href="static/default.css">
 </head>
     <body>
+        <div class="content">
+        <div class="new-jobs">
         <h1>Upload Input File</h1>
-        <form name="input_form" id="input_form" action="" method=post enctype="multipart/form-data">
-          <p><input type="file" name="file">          
-          Job name: <input name="job_name" id="job_name" type="text" />
-            cmd: <input name="cmd" id="cmd" type="text" />
-            <input type="submit" value="Upload"/>
-          </p>
+        <form name="input_form"
+              id="input_form"
+              action=""
+              method=post
+              enctype="multipart/form-data"
+              >
+            <div class="form-group">
+                <label for="job_name">Job name</label>
+                <input name="job_name"
+                       id="job_name"
+                       type="text"
+                       class="form-control"
+                       placeholder="SN1 in Methane" />
+            </div>
+            <div class="form-group">
+                <label for="cmd">Command</label>
+                <input name="cmd"
+                       id="cmd"
+                       type="text"
+                       class="form-control"
+                       placeholder="run-rmg"/>
+            </div>
+            <div class="form-group">
+                <label for="File">Input File</label>
+                <input type="file" name="file"></input>
+            </div>
+
+            <input type="submit" value="Upload" class="btn btn-default"/>
         </form>
-        <br/>
         <!-- <form name="input_form" id="input_form">
             Job name: <input name="job_name" id="job_name" type="text" />
             cmd: <input name="cmd" id="cmd" type="text" />
@@ -21,7 +50,52 @@
         </form> -->
         <!-- <br/> -->
         <div id="progress"></div>
-        Result: <div id="result"><a id="resultLink" href=""></a></div>
+        <span>Result</span>
+        <div id="result"><a id="resultLink" href=""></a></div>
+        </div>
+
+        <div class="recent-jobs">
+            <h1>Recent Jobs</h1>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Download</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Sample job</td>
+                    <td>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-download"
+                                  aria-hidden="true"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Sample job</td>
+                    <td>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-download"
+                                  aria-hidden="true"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Sample job</td>
+                    <td>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-download"
+                                  aria-hidden="true"></span>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </div>
+
         <script src="static/run.js"></script>
     </body>
 </html>

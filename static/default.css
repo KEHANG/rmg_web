@@ -1,4 +1,69 @@
 #result {
     height: 100px;
-    background: green;
+    background: white;
+    border-radius: 10px;
+    border-style: 1px solid rgba(0,0,0,1);
+}
+
+.content {
+    display: flex;
+    padding: 10px;
+}
+
+.new-jobs {
+    background: rgba(0,0,0,0.05);
+    padding: 10px;
+    flex-grow: 1;
+}
+
+.recent-jobs {
+    background: rgba(0,0,0,0.05);
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-left: 1px solid black;
+}
+
+.recent-jobs table {
+    margin-top: 30px;
+}
+
+.recent-jobs table tr{
+    border-top: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.recent-jobs table td {
+    padding: 5px;
+    margin: 10px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 300;
+    font-size: 14pt;
+}
+
+.recent-jobs table span {
+    display: table;
+    margin: 0 auto;
+}
+
+h1 {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 300;
+    font-size: 20pt;
+    border-left: 2px black solid;
+    padding-left: 10px;
+}
+
+label, th, input, span {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 300;
+    font-size: 14pt;   
+}
+
+input {
+    font-size: 10pt;
+}
+
+a:hover {
+    text-decoration: none;
 }
