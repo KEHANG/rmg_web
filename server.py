@@ -89,12 +89,7 @@ def find_molecule():
 @app.route('/run_rmg_job', methods=['GET', 'POST'])
 def run_rmg_job():
     if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        else:
-            raise Exception("no file received!")
+        
         db = get_db()
         # insert blank
         print "get the db!"
@@ -106,15 +101,8 @@ def run_rmg_job():
      (request.form["job_name"], request.form["cmd"]))
         return_value = cur.fetchone()
         db.commit()
-
         cur.close()
-        return str(return_value[0])
-    else:
-        return render_template('run_rmg_job.html')
 
-@app.route('/run_rmg_job_upload', methods=['GET', 'POST'])
-def run_rmg_job_upload():
-    if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
@@ -122,9 +110,9 @@ def run_rmg_job_upload():
             if not os.path.isdir(temp_dir):
                 os.makedirs(temp_dir)
             file.save(os.path.join(temp_dir, filename))
-            return redirect(url_for('run_rmg_job', filename=filename))
         else:
             return "get no file!"
+        return str(return_value[0])
     else:
         return render_template('run_rmg_job.html')
 
