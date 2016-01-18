@@ -25,11 +25,12 @@ def runCmdWithInput(cmd, script, input_file, id):
 
     if cmd in okCmds and script == "rmg":
         script = "scripts/rmg.py"
-        input_file = "temp/input.py"
+        temp_dir = "temp/" + str(id)
+        input_file = temp_dir + "/input.py"
         o = subprocess.call([cmd, script, input_file])
         if o == 0:
             # crete file binary
-            f = open('temp/chemkin/chem.inp', 'rb')
+            f = open(temp_dir + '/chemkin/chem.inp', 'rb')
             data = psycopg2.Binary(f.read())
             # connect to db and update the row with
             # right id
@@ -117,7 +118,10 @@ def run_rmg_job_upload():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            temp_dir = os.path.join(app.config['UPLOAD_FOLDER'], str(return_value[0]))
+            if not os.path.isdir(temp_dir):
+                os.makedirs(temp_dir)
+            file.save(os.path.join(temp_dir, filename))
             return redirect(url_for('run_rmg_job', filename=filename))
         else:
             return "get no file!"
