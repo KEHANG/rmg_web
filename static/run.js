@@ -11,7 +11,7 @@ function renderResult(d,tStatus, jqxhr){
     var resultUrl = "/job_result/" + id;
 
     $("#resultLink")[0].href = resultUrl;
-    $("#resultLink")[0].innerHTML = "chem.inp";
+    $("#resultLink")[0].innerHTML = "chem_"+id+".inp";
     // TODO: put a link there
     // so that once user hit the link
     // server will retrieve the data file back to

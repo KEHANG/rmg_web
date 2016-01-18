@@ -59,7 +59,7 @@ def showResultWithJobId(id):
     chem_file = cur.fetchone()[0]
     cur.close()
     response = make_response(str(chem_file))
-    response.headers["Content-Disposition"] = "attachment; filename=chem.inp"
+    response.headers["Content-Disposition"] = "attachment; filename=chem_{}.inp".format(id)
     return response
   
 
