@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, g, make_response, redirect, url_for
+from flask import Flask, render_template, \
+request, g, make_response, redirect, url_for, jsonify
 import os
 import subprocess
 import psycopg2
@@ -115,6 +116,17 @@ def run_rmg_job():
         return str(return_value[0])
     else:
         return render_template('run_rmg_job.html')
+
+@app.route('/recent_jobs')
+def recent_jobs():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("""SELECT id, name FROM job_result;""")
+    recent_jobs_list = cur.fetchall()
+    print recent_jobs_list
+    cur.close()
+    return jsonify(jobs=recent_jobs_list)
+
 
 def get_db():
     db = getattr(g, '_database', None)
