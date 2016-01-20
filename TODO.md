@@ -1,6 +1,20 @@
+## index page
+
+- beautify (TODO)
+
+## find_molecule
+
+- beautify (TODO)
+
 ## run_rmg_job
 
-- every some time to refresh `recent jobs` (TODO)
+- `recent jobs` automatically (rather than manually) updates top 10 finished jobs (TODO)
+
+- `recent jobs` should rank by job completion (TODO)
+
+- db should record the timestamps of job creation and job completion (TODO)
+
+- every some time to refresh `recent jobs` (done)
 
 - beautify `run_rmg_job` (Great thanks to Greg for making it)
 
