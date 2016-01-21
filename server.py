@@ -121,7 +121,7 @@ def run_rmg_job():
 def recent_jobs():
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("""SELECT id, name FROM job_result;""")
+    cur.execute("""SELECT id, name, cmp_time FROM job_result WHERE cmp_time is not null;""")
     recent_jobs_list = cur.fetchall()
     print recent_jobs_list
     cur.close()
