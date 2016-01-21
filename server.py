@@ -124,8 +124,10 @@ def recent_jobs():
     cur.execute("""SELECT id, name, cmp_time FROM job_result WHERE cmp_time is not null;""")
     recent_jobs_list = cur.fetchall()
     print recent_jobs_list
+    recent_jobs_list_selected = sorted(recent_jobs_list, key=lambda tup: tup[2], reverse=True)[:3]
+    print recent_jobs_list_selected
     cur.close()
-    return jsonify(jobs=recent_jobs_list)
+    return jsonify(jobs=recent_jobs_list_selected)
 
 
 def get_db():
