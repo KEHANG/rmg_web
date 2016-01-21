@@ -39,7 +39,7 @@ def runCmdWithInput(cmd, script, input_file, id):
             cur = conn.cursor()
             
             cur.execute(
-            """UPDATE job_result SET result=%s WHERE id=%s
+            """UPDATE job_result SET cmp_time=CURRENT_TIMESTAMP, result=%s WHERE id=%s
              RETURNING id;""",
             (data, id))
             return_value = cur.fetchone()
@@ -96,8 +96,8 @@ def run_rmg_job():
         print "get the db!"
         cur = db.cursor()
         cur.execute(
-     """INSERT INTO job_result (name, cmd, result, public)
-         VALUES (%s, %s, null, TRUE)
+     """INSERT INTO job_result (smt_time, cmp_time, name, cmd, result, public)
+         VALUES (CURRENT_TIMESTAMP, null, %s, %s, null, TRUE)
          RETURNING id;""",
      (request.form["job_name"], request.form["cmd"]))
         return_value = cur.fetchone()
