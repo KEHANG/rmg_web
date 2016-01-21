@@ -10,9 +10,9 @@
 
 - `recent jobs` automatically (rather than manually) updates top 10 finished jobs (TODO)
 
-- `recent jobs` should rank by job completion (TODO)
+- `recent jobs` should rank by job completion (done)
 
-- db should record the timestamps of job creation and job completion (TODO)
+- db should record the timestamps of job creation and job completion (done)
 
 - every some time to refresh `recent jobs` (done)
 
