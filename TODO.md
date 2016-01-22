@@ -8,6 +8,8 @@
 
 ## run_rmg_job
 
+- `multi-treading` when more than one job registered (TODO)
+
 - `recent jobs` automatically (rather than manually) updates top 10 finished jobs (TODO)
 
 - `recent jobs` should rank by job completion (done)
