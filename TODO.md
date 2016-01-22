@@ -1,6 +1,6 @@
 ## index page
 
-- beautify (TODO)
+- beautify (done)
 
 ## find_molecule
 
@@ -8,9 +8,10 @@
 
 ## run_rmg_job
 
-- `multi-treading` when more than one job registered (TODO)
-
 - `recent jobs` automatically (rather than manually) updates top 10 finished jobs (TODO)
+	- document.crateElement('')
+
+- `multi-treading` when more than one job registered (done)
 
 - `recent jobs` should rank by job completion (done)
 
