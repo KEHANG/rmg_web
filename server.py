@@ -159,6 +159,6 @@ if __name__ == "__main__":
             print "connected!"
     except:
         print "I am unable to connect to the database"   
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="0.0.0.0", port=80, threaded=True)
     
 
