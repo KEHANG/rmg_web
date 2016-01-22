@@ -1,10 +1,50 @@
 <html>
     <head>
+    <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+              integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+              crossorigin="anonymous"></link>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300'
+          rel='stylesheet' type='text/css'></link>
+    <link rel="stylesheet" href="static/default.css">
     </head>
     <body>
-        <h3>Welcome to RMG_Web!</h3>
-        <a href="/find_molecule">Search for a molecule</a>
+    <div class="container-fluid" id="outer">
+    	<div class="row">
+        	<div class="col-md-5 col-md-offset-3">
+        	<h1 style="text-align: center;border-left: none;">Welcome to RMG Web!</h1>
+        	</div>
+        	
+        </div>
+    	<br/>
+        <div class="row">
+        	<div class="col-md-3 col-md-offset-4">
+        	<button type="button" class="btn btn-primary btn-lg btn-block">
+        		
+	        	<span class="glyphicon glyphicon-search"
+	                                  aria-hidden="true"></span> &nbsp
+	            <a style="color:white;" href="/find_molecule">
+	        		Search for a molecule
+	        	</a>
+        	</button>
+        	</div>
+        	
+        </div>
         <br/>
-        <a href="/run_rmg_job">Run an RMG job</a>
+        <div class="row">
+        	<div class="col-md-3 col-md-offset-4">
+        	<button type="button" class="btn btn-primary btn-lg btn-block">
+        		
+        		<span class="glyphicon glyphicon-expand"
+	                                  aria-hidden="true"></span> &nbsp
+	        	<a style="color:white;" href="/run_rmg_job">
+	        		Run an RMG job
+	        	</a>
+        	</button>
+        	</div>
+        	
+        </div>
+        
+    </div>
     </body>
 </html>
