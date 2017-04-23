@@ -4,12 +4,23 @@ import os
 import subprocess
 import psycopg2
 from werkzeug import secure_filename
+from rmgpy.data.thermo import ThermoCentralDatabaseInterface
+from rmgpy.data.thermoTest import getTCDAuthenticationInfo
 
 ALLOWED_EXTENSIONS = set(['py'])
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = 'temp'
 
 okCmds = frozenset(["python"])
+
+# thermo central database setup
+host, port, username, password = getTCDAuthenticationInfo()
+application = 'rmg_web'
+tcdi = ThermoCentralDatabaseInterface(host, port, username, password, application)
+
+# get total registered molecule count
+db =  getattr(tcdi.client, 'thermoCentralDB')
+registration_table = getattr(db, 'registration_table')
 
 @app.route('/<cmd>/<script>/')
 def runCmd(cmd, script):
@@ -128,6 +139,23 @@ def recent_jobs():
     print recent_jobs_list_selected
     cur.close()
     return jsonify(jobs=recent_jobs_list_selected)
+
+@app.route('/thermo_central_db')
+def thermo_central_db():
+    
+    total_count = registration_table.count()
+
+    # get a dict of applications with count
+    aggreg_pipeline=[{"$group": {"_id": "$application", "count": {"$sum": 1}}}]
+    application_count_dict = {}
+    for record in registration_table.aggregate(aggreg_pipeline):
+        application = record['_id']
+        count = record['count']
+        application_count_dict[application] = count
+
+    return render_template('thermo_central_db.html', 
+                            total_count=total_count, 
+                            application_count_dict=application_count_dict)
 
 
 def get_db():
