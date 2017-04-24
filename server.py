@@ -1,8 +1,10 @@
 from flask import Flask, render_template, \
 request, g, make_response, redirect, url_for, jsonify
 import os
+import time
 import subprocess
 import psycopg2
+from bson.son import SON
 from werkzeug import secure_filename
 from rmgpy.data.thermo import ThermoCentralDatabaseInterface
 from rmgpy.data.thermoTest import getTCDAuthenticationInfo
@@ -143,19 +145,31 @@ def recent_jobs():
 @app.route('/thermo_central_db')
 def thermo_central_db():
     
-    total_count = registration_table.count()
+    total_mol_count = registration_table.count()
+
+    # get a dict of molecules with count
+    aggreg_pipeline=[{"$group": {"_id": "$radical_number", "count": {"$sum": 1}}},
+                    {"$sort": SON([("count", -1)])}]
+    radical_count_list = []
+    for record in registration_table.aggregate(aggreg_pipeline):
+        radical = record['_id']
+        count = record['count']
+        radical_count_list.append((radical, count))
 
     # get a dict of applications with count
-    aggreg_pipeline=[{"$group": {"_id": "$application", "count": {"$sum": 1}}}]
-    application_count_dict = {}
+    aggreg_pipeline=[{"$group": {"_id": "$application", "count": {"$sum": 1}}},
+                    {"$sort": SON([("count", -1)])}]
+    application_count_list = []
     for record in registration_table.aggregate(aggreg_pipeline):
         application = record['_id']
         count = record['count']
-        application_count_dict[application] = count
+        application_count_list.append((application, count))
 
     return render_template('thermo_central_db.html', 
-                            total_count=total_count, 
-                            application_count_dict=application_count_dict)
+                            total_mol_count=total_mol_count, 
+                            radical_count_list=radical_count_list,
+                            application_count_list=application_count_list,
+                            time=time.strftime('%a, %B %d'))
 
 
 def get_db():
