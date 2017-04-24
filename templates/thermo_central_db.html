@@ -1,23 +1,136 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet"
-              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-              integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-              crossorigin="anonymous"></link>
-        <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300'
-              rel='stylesheet' type='text/css'></link>
-        <script src="http://code.jquery.com/jquery-2.2.0.min.js" ></script>
-        </script>
-        <link rel="stylesheet" href="static/default.css">
-        <link rel="stylesheet" href="static/odometer-theme-default.css" />
-        <script src="static/odometer.min.js"></script>
-        
-</head>
-    <body>
-      <div>total count: </div>
-      <div id="odometer" class="odometer">{{total_count}}</div>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-      <div>application_count_dict: {{application_count_dict}}
+      <title>Thermo Central Database | Dashboard</title>
+
+      <link href="static/css/bootstrap.min.css" rel="stylesheet">
+      <link href="static/css/font-awesome.css" rel="stylesheet">
+      <link href="static/css/animate.css" rel="stylesheet">
+      <link href="static/css/style.css" rel="stylesheet">  
+    </head>
+    <body class="top-navigation">
+      <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg">
+          <div class="wrapper wrapper-content">
+            <div class="container">
+              <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <span class="label label-info pull-right">Total</span>
+                                <h5>Molecules</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{{total_mol_count}}</h1>
+                                <div class="font-bold">
+                                  <small><i class="fa fa-clock-o"> </i>
+                                    Update on {{time}}
+                                  </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                      <div class="ibox float-e-margins">
+                          <div class="ibox-title">
+                              <span class="label label-info pull-right">Top 2</span>
+                              <h5>Molecules per type</h5>
+                          </div>
+                          <div class="ibox-content">
+
+                              <div class="row">
+                                  {% for radical, count in radical_count_list[:2]%}
+                                  <div class="col-md-6">
+                                      <h1 class="no-margins">{{ count }}</h1>
+                                      <div class="font-bold text-success"><small>{{radical}}-radicals</small></div>
+                                  </div>
+
+                                  {% endfor %}
+                              </div>
+
+
+                          </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-5">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <span class="label label-info pull-right">Total</span>
+                                <h5>Applications</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{{application_count_list | length}}</h1>
+                                <div class="font-bold">
+                                  <small><i class="fa fa-clock-o"> </i>
+                                    Update on {{time}}
+                                  </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                      <div class="ibox float-e-margins">
+                          <div class="ibox-title">
+                              <span class="label label-info pull-right">Top 2</span>
+                              <h5>Molecules per application</h5>
+                          </div>
+                          <div class="ibox-content">
+                              <div class="row">
+                                  {% for application, count in application_count_list[:2]%}
+                                  <div class="col-md-6">
+                                      <h1 class="no-margins">{{count}}</h1>
+                                      <div class="font-bold text-navy"><small>{{application}}</small></div>
+                                  </div>
+                                  {% endfor %}
+                              </div>
+
+                          </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="col-md-5">
+                      <div class="ibox float-e-margins">
+                          <div class="ibox-title">
+                              <h5>User activity</h5>
+                          </div>
+                          {% for application, count in application_count_list%}
+                          <div class="ibox-content">
+                              <div class="row">
+                                  <div class="col-xs-3">
+                                      <small class="stats-label">User</small>
+                                      <h5>TCD_tester</h5>
+                                  </div>
+
+                                  <div class="col-xs-5">
+                                      <small class="stats-label">Application</small>
+                                      <h5>{{application}}</h5>
+                                  </div>
+                                  <div class="col-xs-4">
+                                      <small class="stats-label">Registered molecule</small>
+                                      <h5>{{count}}</h5>
+                                  </div>
+                              </div>
+                          </div>
+                          {%endfor%}
+                      </div>
+                  </div>
+
+              </div>
+            </div>
+        </div>
       </div>
     </body>
 </html>
