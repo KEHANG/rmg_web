@@ -13,6 +13,7 @@ from rmgpy.data.thermoTest import getTCDAuthenticationInfo
 ALLOWED_EXTENSIONS = set(['py'])
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = 'temp'
+app.config["MOLECULE_IMAGES"] = 'static/img'
 
 okCmds = frozenset(["python"])
 
@@ -171,7 +172,8 @@ def thermo_central_db():
     top_ringcore_counts = list(saturated_ringcore_table.find().sort([('count', -1)]).limit(3))
     ringcore_count_list = []
     for ringcore_count in top_ringcore_counts:
-        ringcore = ringcore_count['aug_inchi']
+        ringcore = str(ringcore_count['aug_inchi'])
+        draw_molecule_from_aug_inchi(ringcore)
         count = ringcore_count['count']
         timestamp = ringcore_count['timestamp']
         ringcore_count_list.append((ringcore, count, timestamp))
@@ -183,6 +185,12 @@ def thermo_central_db():
                             ringcore_count_list=ringcore_count_list,
                             time=datetime.datetime.fromtimestamp(int(timestamp)).strftime('%d/%m/%Y: %H:%M:%S'))
 
+def draw_molecule_from_aug_inchi(aug_inchi):
+    from rmgpy.molecule import Molecule
+
+    molecule = Molecule().fromAugmentedInChI(aug_inchi)
+    path = os.path.join(app.config['MOLECULE_IMAGES'], '{0}.svg'.format(aug_inchi.replace('/', '_slash_')))
+    molecule.draw(path)
 
 def get_db():
     db = getattr(g, '_database', None)
