@@ -2,6 +2,7 @@ from flask import Flask, render_template, \
 request, g, make_response, redirect, url_for, jsonify
 import os
 import time
+import datetime
 import subprocess
 import psycopg2
 from bson.son import SON
@@ -23,6 +24,7 @@ tcdi = ThermoCentralDatabaseInterface(host, port, username, password, applicatio
 # get total registered molecule count
 db =  getattr(tcdi.client, 'thermoCentralDB')
 registration_table = getattr(db, 'registration_table')
+saturated_ringcore_table = getattr(db, 'saturated_ringcore_table')
 
 @app.route('/<cmd>/<script>/')
 def runCmd(cmd, script):
@@ -165,11 +167,21 @@ def thermo_central_db():
         count = record['count']
         application_count_list.append((application, count))
 
+    # get analysis result
+    top_ringcore_counts = list(saturated_ringcore_table.find().sort([('count', -1)]).limit(3))
+    ringcore_count_list = []
+    for ringcore_count in top_ringcore_counts:
+        ringcore = ringcore_count['aug_inchi']
+        count = ringcore_count['count']
+        timestamp = ringcore_count['timestamp']
+        ringcore_count_list.append((ringcore, count, timestamp))
+
     return render_template('thermo_central_db.html', 
                             total_mol_count=total_mol_count, 
                             radical_count_list=radical_count_list,
                             application_count_list=application_count_list,
-                            time=time.strftime('%a, %B %d'))
+                            ringcore_count_list=ringcore_count_list,
+                            time=datetime.datetime.fromtimestamp(int(timestamp)).strftime('%d/%m/%Y: %H:%M:%S'))
 
 
 def get_db():

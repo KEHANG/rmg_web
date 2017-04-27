@@ -16,21 +16,21 @@
         <div id="page-wrapper" class="gray-bg">
           <div class="wrapper wrapper-content">
             <div class="container">
+            <div class="row">
               <div class="col-md-7">
                 <div class="row">
                     <div class="col-md-5">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <span class="label label-info pull-right">Total</span>
+                                <span class="label label-success pull-right">Registration table</span>
                                 <h5>Molecules</h5>
                             </div>
                             <div class="ibox-content">
                                 <h1 class="no-margins">{{total_mol_count}}</h1>
-                                <div class="font-bold">
-                                  <small><i class="fa fa-clock-o"> </i>
-                                    Update on {{time}}
+                            <div class="font-bold">
+                                  <small style="color: white"><i class="fa fa-clock-o"> </i>
                                   </small>
-                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -38,7 +38,6 @@
                     <div class="col-md-7">
                       <div class="ibox float-e-margins">
                           <div class="ibox-title">
-                              <span class="label label-info pull-right">Top 2</span>
                               <h5>Molecules per type</h5>
                           </div>
                           <div class="ibox-content">
@@ -46,7 +45,8 @@
                               <div class="row">
                                   {% for radical, count in radical_count_list[:2]%}
                                   <div class="col-md-6">
-                                      <h1 class="no-margins">{{ count }}</h1>
+                                      {% set percent = (count / total_mol_count) |round(3) * 100 %}
+                                      <h1 class="no-margins">{{percent}}%</h1>
                                       <div class="font-bold text-success"><small>{{radical}}-radicals</small></div>
                                   </div>
 
@@ -64,14 +64,13 @@
                     <div class="col-md-5">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <span class="label label-info pull-right">Total</span>
+                                <span class="label label-success pull-right">Registration table</span>
                                 <h5>Applications</h5>
                             </div>
                             <div class="ibox-content">
                                 <h1 class="no-margins">{{application_count_list | length}}</h1>
                                 <div class="font-bold">
-                                  <small><i class="fa fa-clock-o"> </i>
-                                    Update on {{time}}
+                                  <small style="color: white"><i class="fa fa-clock-o"> </i>
                                   </small>
                                 </div>
                             </div>
@@ -81,14 +80,14 @@
                     <div class="col-md-7">
                       <div class="ibox float-e-margins">
                           <div class="ibox-title">
-                              <span class="label label-info pull-right">Top 2</span>
                               <h5>Molecules per application</h5>
                           </div>
                           <div class="ibox-content">
                               <div class="row">
                                   {% for application, count in application_count_list[:2]%}
                                   <div class="col-md-6">
-                                      <h1 class="no-margins">{{count}}</h1>
+                                      {% set percent = (count / total_mol_count) |round(3) * 100 %}
+                                      <h1 class="no-margins">{{percent}}%</h1>
                                       <div class="font-bold text-navy"><small>{{application}}</small></div>
                                   </div>
                                   {% endfor %}
@@ -104,7 +103,35 @@
                 <div class="col-md-5">
                       <div class="ibox float-e-margins">
                           <div class="ibox-title">
-                              <h5>User activity</h5>
+                              <h5>Top polycyclic structures</h5> 
+                              <small class="pull-right"><i class="fa fa-clock-o"> </i>
+                                        Update on {{time}}
+                              </small>
+                          </div>
+                          {% for aug_inchi, count, timestamp in ringcore_count_list%}
+                          <div class="ibox-content">
+                              <div class="row">
+                                  <div class="col-xs-6">
+                                      <small class="stats-label">Augmented InChI</small>
+                                      <h5><small>{{aug_inchi}}</small></h5>
+                                  </div>
+                                  <div class="col-xs-6">
+                                      <small class="stats-label">Present in</small>
+                                      <h5>{{count}} <small>molecules</small></h5>
+                                  </div>
+                              </div>
+                          </div>
+                          {%endfor%}
+                      </div>
+                  </div>
+
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="ibox float-e-margins">
+                          <div class="ibox-title">
+                              <h5>Top user activity</h5>
                           </div>
                           {% for application, count in application_count_list%}
                           <div class="ibox-content">
@@ -127,7 +154,7 @@
                           {%endfor%}
                       </div>
                   </div>
-
+                </div>
               </div>
             </div>
         </div>
