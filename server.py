@@ -159,6 +159,15 @@ def thermo_central_db():
         count = record['count']
         radical_count_list.append((radical, count))
 
+    # get a dict of users with count
+    aggreg_pipeline=[{"$group": {"_id": "$user", "count": {"$sum": 1}}},
+                    {"$sort": SON([("count", -1)])}]
+    user_count_list = []
+    for record in registration_table.aggregate(aggreg_pipeline):
+        user = record['_id']
+        count = record['count']
+        user_count_list.append((user, count))
+
     # get a dict of applications with count
     aggreg_pipeline=[{"$group": {"_id": "$application", "count": {"$sum": 1}}},
                     {"$sort": SON([("count", -1)])}]
@@ -169,7 +178,8 @@ def thermo_central_db():
         application_count_list.append((application, count))
 
     # get analysis result
-    top_ringcore_counts = list(saturated_ringcore_table.find().sort([('count', -1)]).limit(3))
+    total_ringcore_count = saturated_ringcore_table.count()
+    top_ringcore_counts = list(saturated_ringcore_table.find().sort([('count', -1)]).limit(4))
     ringcore_count_list = []
     for ringcore_count in top_ringcore_counts:
         ringcore = str(ringcore_count['aug_inchi'])
@@ -180,7 +190,9 @@ def thermo_central_db():
 
     return render_template('thermo_central_db.html', 
                             total_mol_count=total_mol_count, 
+                            total_ringcore_count=total_ringcore_count,
                             radical_count_list=radical_count_list,
+                            user_count_list=user_count_list,
                             application_count_list=application_count_list,
                             ringcore_count_list=ringcore_count_list,
                             time=datetime.datetime.fromtimestamp(int(timestamp)).strftime('%d/%m/%Y: %H:%M:%S'))

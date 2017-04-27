@@ -14,28 +14,77 @@
     <body class="top-navigation">
       <div id="wrapper">
         <div id="page-wrapper" class="gray-bg">
+        <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-9">
+                    <h2>Thermo Central Database</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li class="active">
+                            <strong>Thermo Central Database</strong>
+                        </li>
+                    </ol>
+                </div>
+            </div>
           <div class="wrapper wrapper-content">
             <div class="container">
             <div class="row">
               <div class="col-md-7">
+              <!-- Row 1 -->
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <span class="label label-success pull-right">Registration table</span>
-                                <h5>Molecules</h5>
+                                <h5>Users</h5>
                             </div>
                             <div class="ibox-content">
-                                <h1 class="no-margins">{{total_mol_count}}</h1>
-                            <div class="font-bold">
-                                  <small style="color: white"><i class="fa fa-clock-o"> </i>
-                                  </small>
-                            </div>
+                                <h1 class="no-margins">{{user_count_list | length}}</h1>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-7">
+                    <div class="col-md-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Applications</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{{application_count_list | length}}</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                  </div>
+                
+                  <!-- Row 2 -->
+                  <div class="row">
+                    <div class="col-md-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Molecules</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{{total_mol_count}}</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Polycyclic core</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">{{total_ringcore_count}}</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                  </div>
+                  <!-- Row 3 -->
+                  <div class="row">
+                  <div class="col-md-12">
                       <div class="ibox float-e-margins">
                           <div class="ibox-title">
                               <h5>Molecules per type</h5>
@@ -57,53 +106,13 @@
                           </div>
                       </div>
                     </div>
-
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-5">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <span class="label label-success pull-right">Registration table</span>
-                                <h5>Applications</h5>
-                            </div>
-                            <div class="ibox-content">
-                                <h1 class="no-margins">{{application_count_list | length}}</h1>
-                                <div class="font-bold">
-                                  <small style="color: white"><i class="fa fa-clock-o"> </i>
-                                  </small>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-
-                    <div class="col-md-7">
-                      <div class="ibox float-e-margins">
-                          <div class="ibox-title">
-                              <h5>Molecules per application</h5>
-                          </div>
-                          <div class="ibox-content">
-                              <div class="row">
-                                  {% for application, count in application_count_list[:2]%}
-                                  <div class="col-md-6">
-                                      {% set percent = (count / total_mol_count) |round(3) * 100 %}
-                                      <h1 class="no-margins">{{percent}}%</h1>
-                                      <div class="font-bold text-navy"><small>{{application}}</small></div>
-                                  </div>
-                                  {% endfor %}
-                              </div>
-
-                          </div>
-                      </div>
-                    </div>
-
-                  </div>
                 </div>
 
                 <div class="col-md-5">
                       <div class="ibox float-e-margins">
                           <div class="ibox-title">
-                              <h5>Top polycyclic structures</h5> 
+                              <h5>Top polycyclic cores</h5> 
                               <small class="pull-right"><i class="fa fa-clock-o"> </i>
                                         Update on {{time}}
                               </small>
