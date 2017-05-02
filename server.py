@@ -178,6 +178,23 @@ def thermo_central_db():
         timestamp = ringcore_count['timestamp']
         ringcore_count_list.append((ringcore, count, timestamp))
 
+    # user-application stats
+    aggreg_pipeline=[{"$group": 
+                   {"_id": 
+                        {"application":"$application",
+                        "user":"$user"}, 
+                    "count": 
+                        {"$sum": 1}
+                   }
+              },
+             {"$sort": SON([("count", -1)])}]
+    user_application_count_list = []
+    for record in registration_table.aggregate(aggreg_pipeline):
+        application = record['_id']['application']
+        user = record['_id']['user']
+        count = record['count']
+        user_application_count_list.append((user, application, count))
+
     return render_template('thermo_central_db.html', 
                             total_mol_count=total_mol_count, 
                             total_ringcore_count=total_ringcore_count,
@@ -185,6 +202,7 @@ def thermo_central_db():
                             user_count_list=user_count_list,
                             application_count_list=application_count_list,
                             ringcore_count_list=ringcore_count_list,
+                            user_application_count_list=user_application_count_list,
                             time=datetime.datetime.fromtimestamp(int(timestamp)).strftime('%d/%m/%Y: %H:%M:%S'))
 
 @app.route('/predictor_performance')
