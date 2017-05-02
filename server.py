@@ -78,22 +78,6 @@ def showResultWithJobId(id):
     response = make_response(str(chem_file))
     response.headers["Content-Disposition"] = "attachment; filename=chem_{}.inp".format(id)
     return response
-  
-
-# chem_args = parse(inputBytes)      # Bytes
-# chem_ret_val = fullrun(chem_args)  # Data
-# # chem_out = toString(chem_ret_val)  # Bytes
-
-# @app.route('processData','GET')
-# def processData():
-#     renderForm
-
-# @app.route('processData','POST')
-# def processData(dataBytes):
-#     bytes = app.getBytes
-#     resp  = toString( fullrun ( parse (bytes)))
-#     resp.setHeader('Content-Style','download');
-
 
 @app.route('/')
 def index():
