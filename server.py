@@ -9,6 +9,7 @@ from bson.son import SON
 from werkzeug import secure_filename
 from rmgpy.data.thermo import ThermoCentralDatabaseInterface
 from rmgpy.data.thermoTest import getTCDAuthenticationInfo
+from utils import connect_to_PPD
 
 ALLOWED_EXTENSIONS = set(['py'])
 app = Flask(__name__)
@@ -23,9 +24,14 @@ application = 'rmg_web'
 tcdi = ThermoCentralDatabaseInterface(host, port, username, password, application)
 
 # get total registered molecule count
-db =  getattr(tcdi.client, 'thermoCentralDB')
-registration_table = getattr(db, 'registration_table')
-saturated_ringcore_table = getattr(db, 'saturated_ringcore_table')
+thermoCentralDB =  getattr(tcdi.client, 'thermoCentralDB')
+registration_table = getattr(thermoCentralDB, 'registration_table')
+saturated_ringcore_table = getattr(thermoCentralDB, 'saturated_ringcore_table')
+
+# access predictor performance db
+ppd_client = connect_to_PPD()
+predictorPerformanceDB =  getattr(ppd_client, 'predictor_performance')
+molconv_performance_table = getattr(predictorPerformanceDB, 'molconv_performance_table')
 
 @app.route('/<cmd>/<script>/')
 def runCmd(cmd, script):
@@ -180,6 +186,26 @@ def thermo_central_db():
                             application_count_list=application_count_list,
                             ringcore_count_list=ringcore_count_list,
                             time=datetime.datetime.fromtimestamp(int(timestamp)).strftime('%d/%m/%Y: %H:%M:%S'))
+
+@app.route('/predictor_performance')
+def predictor_performance():
+
+    latest_molconv_performance = list(molconv_performance_table.find().sort([('timestamp', -1)]).limit(1))[0]
+    small_cyclic_performance = [latest_molconv_performance['small_cyclic_table']]
+    large_linear_polycyclic_performance = [latest_molconv_performance['large_linear_polycyclic_table']]
+    large_fused_polycyclic_performance = [latest_molconv_performance['large_fused_polycyclic_table']]
+
+    small_O_only_polycyclic_performance = [latest_molconv_performance['small_O_only_polycyclic_table']]
+    large_linear_O_only_polycyclic_performance = [latest_molconv_performance['large_linear_O_only_polycyclic_table']]
+    large_fused_O_only_polycyclic_performance = [latest_molconv_performance['large_fused_O_only_polycyclic_table']]
+
+    return render_template('predictor_performance.html',
+                            small_cyclic_performance=small_cyclic_performance,
+                            large_linear_polycyclic_performance=large_linear_polycyclic_performance,
+                            large_fused_polycyclic_performance=large_fused_polycyclic_performance,
+                            small_O_only_polycyclic_performance=small_O_only_polycyclic_performance,
+                            large_linear_O_only_polycyclic_performance=large_linear_O_only_polycyclic_performance,
+                            large_fused_O_only_polycyclic_performance=large_fused_O_only_polycyclic_performance)
 
 def draw_molecule_from_aug_inchi(aug_inchi):
     from rmgpy.molecule import Molecule

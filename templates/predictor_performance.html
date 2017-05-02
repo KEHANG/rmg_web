@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}
+Thermo Predictor Performance | Dashboard 
+{% endblock %}
+
+{% block page_title %}
+Thermo Predictor Performance
+{% endblock %}
+
+{% block active_page %}
+Thermo Predictor Performance
+{% endblock %}
+
+                   
+{% block content %}
+<!-- Row 1 -->
+<div class="row">
+    <div class="col-md-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <span class="label label-success pull-right">Hydrocarbon</span>
+                <h5>Small Cyclics</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="font-bold text-info"><small>Molecular ConvNet</small></div>
+                        <h1 class="no-margins">{{small_cyclic_performance | first | round(2)}}</h1>
+                        <h6>kcal/mol</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <span class="label label-success pull-right">Hydrocarbon</span>
+                <h5>Large Linear Polycyclics</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="font-bold text-info"><small>Molecular ConvNet</small></div>
+                        <h1 class="no-margins">{{large_linear_polycyclic_performance | first | round(2)}}</h1>
+                        <h6>kcal/mol</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="col-md-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <span class="label label-success pull-right">Hydrocarbon</span>
+                <h5>Large Fused Polycyclics</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="font-bold text-info"><small>Molecular ConvNet</small></div>
+                        <h1 class="no-margins">{{large_fused_polycyclic_performance | first | round(2)}}</h1>
+                        <h6>kcal/mol</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Row 2 -->
+<div class="row">
+    <div class="col-md-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <span class="label label-primary pull-right">Oxygenate</span>
+                <h5>Small Cyclics</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="font-bold text-info"><small>Molecular ConvNet</small></div>
+                        <h1 class="no-margins">{{small_O_only_polycyclic_performance | first | round(2)}}</h1>
+                        <h6>kcal/mol</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <span class="label label-primary pull-right">Oxygenate</span>
+                <h5>Large Linear Polycyclics</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="font-bold text-info"><small>Molecular ConvNet</small></div>
+                        <h1 class="no-margins">{{large_linear_O_only_polycyclic_performance | first | round(2)}}</h1>
+                        <h6>kcal/mol</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="col-md-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <span class="label label-primary pull-right">Oxygenate</span>
+                <h5>Large Fused Polycyclics</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="font-bold text-info"><small>Molecular ConvNet</small></div>
+                        <h1 class="no-margins">{{large_fused_O_only_polycyclic_performance | first | round(2)}}</h1>
+                        <h6>kcal/mol</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}   
+            
