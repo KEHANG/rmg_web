@@ -233,11 +233,11 @@ def thermo_estimation():
         molecule_smiles = str(request.form['molecule_smiles'])
         try:
             mol = Molecule(SMILES=molecule_smiles)
+            aug_inchi = mol.toAugmentedInChI()
+            draw_molecule_from_aug_inchi(aug_inchi)
         except:
             return render_template('thermo_estimation.html')
-        aug_inchi = mol.toAugmentedInChI()
-        draw_molecule_from_aug_inchi(aug_inchi)
-
+        
         thermo_result = h298_predictor.predict(mol)
         return render_template('thermo_estimation.html', 
                                 thermo_result=thermo_result,
