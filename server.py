@@ -7,9 +7,11 @@ import subprocess
 import psycopg2
 from bson.son import SON
 from werkzeug import secure_filename
+from rmgpy.molecule import Molecule
 from rmgpy.data.thermo import ThermoCentralDatabaseInterface
 from rmgpy.data.thermoTest import getTCDAuthenticationInfo
 from utils import connect_to_PPD
+from thermo_predictor import h298_predictor
 
 ALLOWED_EXTENSIONS = set(['py'])
 app = Flask(__name__)
@@ -225,12 +227,31 @@ def predictor_performance():
                             large_linear_O_only_polycyclic_performance=large_linear_O_only_polycyclic_performance,
                             large_fused_O_only_polycyclic_performance=large_fused_O_only_polycyclic_performance)
 
-def draw_molecule_from_aug_inchi(aug_inchi):
-    from rmgpy.molecule import Molecule
+@app.route('/thermo_estimation', methods=['GET', 'POST'])
+def thermo_estimation():
+    if request.method == 'POST':
+        molecule_smiles = str(request.form['molecule_smiles'])
+        try:
+            mol = Molecule(SMILES=molecule_smiles)
+        except:
+            return render_template('thermo_estimation.html')
+        aug_inchi = mol.toAugmentedInChI()
+        draw_molecule_from_aug_inchi(aug_inchi)
 
+        thermo_result = h298_predictor.predict(mol)
+        return render_template('thermo_estimation.html', 
+                                thermo_result=thermo_result,
+                                molecule_smiles=molecule_smiles,
+                                aug_inchi=aug_inchi)
+    else:
+
+        return render_template('thermo_estimation.html')
+
+def draw_molecule_from_aug_inchi(aug_inchi):
     molecule = Molecule().fromAugmentedInChI(aug_inchi)
     path = os.path.join(app.config['MOLECULE_IMAGES'], '{0}.svg'.format(aug_inchi.replace('/', '_slash_')))
-    molecule.draw(path)
+    if not os.path.exists(path):
+        molecule.draw(path)
 
 def get_db():
     db = getattr(g, '_database', None)

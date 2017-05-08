@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}
+Thermo Estimation | Dashboard 
+{% endblock %}
+
+{% block page_title %}
+Thermo Estimation
+{% endblock %}
+
+{% block active_page %}
+Thermo Estimation
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<div class="col-md-12">
+  <!-- <form name="input_form"
+        id="input_form"
+        action=""
+        method=post
+        enctype="multipart/form-data"
+        >
+      <div class="form-group">
+          <label for="molecule_smiles">Molecule SMILES</label>
+          <input name="molecule_smiles"
+                 id="molecule_smiles"
+                 type="text"
+                 class="form-control"
+                 placeholder="C1CCCC1"
+                 value="{{molecule_smiles}}" >
+      </div>
+
+      <input type="submit" value="Estimate Thermo" class="btn btn-default"/>
+  </form> -->
+  <form method="post" class="form-horizontal">
+      <div class="input-group m-b" >
+          <span class="input-group-btn">
+              <input type="submit" value="Estimate" class="btn btn-primary"/>
+          </span> 
+          <input 
+                  type="text" 
+                  class="form-control"
+                  name="molecule_smiles"
+                  id="molecule_smiles"
+                  placeholder="C1CCCC1"
+                  value="{{molecule_smiles}}"/>
+
+          
+      </div>
+  </form>
+  </div>
+</div>
+
+{% if thermo_result %}
+</br>
+<div class="row">
+  <div class="col-md-12">
+      <div class="ibox float-e-margins">
+          <div class="ibox-title">
+              <h5>Heat of Formation, H(298K)</h5>
+          </div>
+          <div class="ibox-content">
+              <div class="row">
+                  <div class="col-md-6">
+                      <img src="static/img/{{aug_inchi | replace('/', '_slash_')}}.svg">
+                  </div>
+                  <div class="col-md-6">
+                      <div class="font-bold text-info"><small>Molecular ConvNet</small></div>
+                      <h1 class="no-margins">{{thermo_result | round(2) }}</h1>
+                      <h6>kcal/mol</h6>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endif %}
+
+{% endblock %} 
