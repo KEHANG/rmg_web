@@ -1,0 +1,9 @@
+
+
+# Python intermediate files
+*.pyc
+
+# data folder
+data/pdd_scratch_add20/*
+
+temp/*
