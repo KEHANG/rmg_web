@@ -4,7 +4,8 @@
 *.pyc
 
 # data folder
-data/pdd_scratch_add20/*
+data/*
+blueprints/thermo_predictor/data/*
 
 temp/*
 
