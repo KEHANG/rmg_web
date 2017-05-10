@@ -1,189 +1,174 @@
-<!DOCTYPE html>
-<html>
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
 
-      <title>Thermo Central Database | Dashboard</title>
+{% block title %}
+Thermo Central Database | Dashboard 
+{% endblock %}
 
-      <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-      <link href="/static/css/font-awesome.css" rel="stylesheet">
-      <link href="/static/css/animate.css" rel="stylesheet">
-      <link href="/static/css/style.css" rel="stylesheet">  
-    </head>
-    <body class="top-navigation">
-      <div id="wrapper">
-        <div id="page-wrapper" class="gray-bg">
-        <div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-lg-9">
-                    <h2>Thermo Central Database</h2>
-                    <ol class="breadcrumb">
-                        <li>
-                            <a href="#">Home</a>
-                        </li>
-                        <li class="active">
-                            <strong>Thermo Central Database</strong>
-                        </li>
-                    </ol>
+{% block page_title %}
+Thermo Central Database
+{% endblock %}
+
+{% block active_page %}
+Thermo Central Database
+{% endblock %}
+
+                   
+{% block content %}
+<!-- Row 1 -->
+<div class="row">
+<!-- Column 1 in Row 1
+ -->
+  <div class="col-md-7">
+  <!-- row 1 in Column 1 -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Users</h5>
                 </div>
-            </div>
-          <div class="wrapper wrapper-content">
-            <div class="container">
-            <div class="row">
-              <div class="col-md-7">
-              <!-- Row 1 -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>Users</h5>
-                            </div>
-                            <div class="ibox-content">
-                                <div class="row">
-                                  <div class="col-md-6">
-                                      <h1 class="no-margins">{{user_count_list | length}}</h1>
-                                      <small>Total users</small>
-                                  </div>
-                                  <div class="col-md-6">
-                                      <h1 class="no-margins"><small>{{user_count_list | first | first}}</small></h1>
-                                      <div class="font-bold text-navy"><i class="fa fa-level-up"></i> <small>Top user</small></div>
-                                  </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>Applications</h5>
-                            </div>
-                            <div class="ibox-content">
-                              <div class="row">
-                                  <div class="col-md-6">
-                                      <h1 class="no-margins">{{application_count_list | length}}</h1>
-                                      <small>Total apps</small>
-                                  </div>
-                                  <div class="col-md-6">
-                                      <h1 class="no-margins"><small>{{application_count_list | first | first}}</small></h1>
-                                      <div class="font-bold text-navy"><i class="fa fa-level-up"></i> <small>Top app</small></div>
-                                  </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                  </div>
-                
-                  <!-- Row 2 -->
-                  <div class="row">
-                    <div class="col-md-6">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>Molecules</h5>
-                            </div>
-                            <div class="ibox-content">
-                                <h1 class="no-margins">{{total_mol_count}}</h1>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>Polycyclic core</h5>
-                            </div>
-                            <div class="ibox-content">
-                                <h1 class="no-margins">{{total_ringcore_count}}</h1>
-                            </div>
-                        </div>
-                    </div>
-
-                  </div>
-                  <!-- Row 3 -->
-                  <div class="row">
-                  <div class="col-md-12">
-                      <div class="ibox float-e-margins">
-                          <div class="ibox-title">
-                              <h5>Molecules per type</h5>
-                          </div>
-                          <div class="ibox-content">
-
-                              <div class="row">
-                                  {% for radical, count in radical_count_list[:2]%}
-                                  <div class="col-md-6">
-                                      {% set percent = (count / total_mol_count) |round(3) * 100 %}
-                                      <h1 class="no-margins">{{percent}}%</h1>
-                                      <div class="font-bold text-success"><small>{{radical}}-radicals</small></div>
-                                  </div>
-
-                                  {% endfor %}
-                              </div>
-
-
-                          </div>
+                <div class="ibox-content">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <h1 class="no-margins">{{user_count_list | length}}</h1>
+                          <small>Total users</small>
+                      </div>
+                      <div class="col-md-6">
+                          <h1 class="no-margins"><small>{{user_count_list | first | first}}</small></h1>
+                          <div class="font-bold text-navy"><i class="fa fa-level-up"></i> <small>Top user</small></div>
                       </div>
                     </div>
-                    </div>
                 </div>
-
-                <div class="col-md-5">
-                      <div class="ibox float-e-margins">
-                          <div class="ibox-title">
-                              <h5>Top polycyclic cores</h5> 
-                              <small class="pull-right"><i class="fa fa-clock-o"> </i>
-                                        Update on {{time}}
-                              </small>
-                          </div>
-                          {% for aug_inchi, count, timestamp in ringcore_count_list%}
-                          <div class="ibox-content">
-                              <div class="row">
-                                  <div class="col-xs-6">
-                                      <img src="/static/img/{{aug_inchi | replace('/', '_slash_')}}.svg">
-                                  </div>
-                                  <div class="col-xs-6">
-                                      <small class="stats-label">Present in</small>
-                                      <h5>{{count}} <small>molecules</small></h5>
-                                  </div>
-                              </div>
-                          </div>
-                          {%endfor%}
-                      </div>
-                  </div>
-
-                </div>
-
-                <div class="row">
-                  <div class="col-md-12">
-                      <div class="ibox float-e-margins">
-                          <div class="ibox-title">
-                              <h5>Top user activity</h5>
-                          </div>
-                          {% for user, application, count in user_application_count_list%}
-                          <div class="ibox-content">
-                              <div class="row">
-                                  <div class="col-xs-3">
-                                      <small class="stats-label">User</small>
-                                      <h5>{{user}}</h5>
-                                  </div>
-
-                                  <div class="col-xs-5">
-                                      <small class="stats-label">Application</small>
-                                      <h5>{{application}}</h5>
-                                  </div>
-                                  <div class="col-xs-4">
-                                      <small class="stats-label">Registered molecule</small>
-                                      <h5>{{count}}</h5>
-                                  </div>
-                              </div>
-                          </div>
-                          {%endfor%}
-                      </div>
-                  </div>
-                </div>
-              </div>
             </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Applications</h5>
+                </div>
+                <div class="ibox-content">
+                  <div class="row">
+                      <div class="col-md-6">
+                          <h1 class="no-margins">{{application_count_list | length}}</h1>
+                          <small>Total apps</small>
+                      </div>
+                      <div class="col-md-6">
+                          <h1 class="no-margins"><small>{{application_count_list | first | first}}</small></h1>
+                          <div class="font-bold text-navy"><i class="fa fa-level-up"></i> <small>Top app</small></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </div>
-    </body>
-</html>
+    
+      <!-- row 2 in Column 1 -->
+      <div class="row">
+        <div class="col-md-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Molecules</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">{{total_mol_count}}</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Polycyclic core</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">{{total_ringcore_count}}</h1>
+                </div>
+            </div>
+        </div>
+
+      </div>
+      <!-- row 3 in Column 1 -->
+      <div class="row">
+      <div class="col-md-12">
+          <div class="ibox float-e-margins">
+              <div class="ibox-title">
+                  <h5>Molecules per type</h5>
+              </div>
+              <div class="ibox-content">
+
+                  <div class="row">
+                      {% for radical, count in radical_count_list[:2]%}
+                      <div class="col-md-6">
+                          {% set percent = (count / total_mol_count) |round(3) * 100 %}
+                          <h1 class="no-margins">{{percent}}%</h1>
+                          <div class="font-bold text-success"><small>{{radical}}-radicals</small></div>
+                      </div>
+
+                      {% endfor %}
+                  </div>
+
+
+              </div>
+          </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Column 2 -->
+    <div class="col-md-5">
+          <div class="ibox float-e-margins">
+              <div class="ibox-title">
+                  <h5>Top polycyclic cores</h5> 
+                  <small class="pull-right"><i class="fa fa-clock-o"> </i>
+                            Update on {{time}}
+                  </small>
+              </div>
+              {% for aug_inchi, count, timestamp in ringcore_count_list%}
+              <div class="ibox-content">
+                  <div class="row">
+                      <div class="col-xs-6">
+                          <img src="/static/img/{{aug_inchi | replace('/', '_slash_')}}.svg">
+                      </div>
+                      <div class="col-xs-6">
+                          <small class="stats-label">Present in</small>
+                          <h5>{{count}} <small>molecules</small></h5>
+                      </div>
+                  </div>
+              </div>
+              {%endfor%}
+          </div>
+      </div>
+
+    </div>
+
+    <!-- Row 2 -->
+    <div class="row">
+      <div class="col-md-12">
+          <div class="ibox float-e-margins">
+              <div class="ibox-title">
+                  <h5>Top user activity</h5>
+              </div>
+              {% for user, application, count in user_application_count_list%}
+              <div class="ibox-content">
+                  <div class="row">
+                      <div class="col-xs-3">
+                          <small class="stats-label">User</small>
+                          <h5>{{user}}</h5>
+                      </div>
+
+                      <div class="col-xs-5">
+                          <small class="stats-label">Application</small>
+                          <h5>{{application}}</h5>
+                      </div>
+                      <div class="col-xs-4">
+                          <small class="stats-label">Registered molecule</small>
+                          <h5>{{count}}</h5>
+                      </div>
+                  </div>
+              </div>
+              {%endfor%}
+          </div>
+      </div>
+    </div>
+{% endblock%}
