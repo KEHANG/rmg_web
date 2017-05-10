@@ -2,33 +2,23 @@ from flask import Flask, render_template, \
 request, g, make_response, redirect, url_for, jsonify
 import os
 import time
-import datetime
 import subprocess
 import psycopg2
-from bson.son import SON
 from werkzeug import secure_filename
 from rmgpy.molecule import Molecule
-from rmgpy.data.thermo import ThermoCentralDatabaseInterface
-from rmgpy.data.thermoTest import getTCDAuthenticationInfo
-from utils import connect_to_PPD
+from blueprints.utils import connect_to_PPD, draw_molecule_from_aug_inchi
 from thermo_predictor import h298_predictor
+from blueprints.thermo_central_db import thermo_central_db
+
 
 ALLOWED_EXTENSIONS = set(['py'])
 app = Flask(__name__)
+app.register_blueprint(thermo_central_db, url_prefix='/thermo_central_db')
+
 app.config["UPLOAD_FOLDER"] = 'temp'
 app.config["MOLECULE_IMAGES"] = 'static/img'
 
 okCmds = frozenset(["python"])
-
-# thermo central database setup
-host, port, username, password = getTCDAuthenticationInfo()
-application = 'rmg_web'
-tcdi = ThermoCentralDatabaseInterface(host, port, username, password, application)
-
-# get total registered molecule count
-thermoCentralDB =  getattr(tcdi.client, 'thermoCentralDB')
-registration_table = getattr(thermoCentralDB, 'registration_table')
-saturated_ringcore_table = getattr(thermoCentralDB, 'saturated_ringcore_table')
 
 # access predictor performance db
 ppd_client = connect_to_PPD()
@@ -137,76 +127,6 @@ def recent_jobs():
     cur.close()
     return jsonify(jobs=recent_jobs_list_selected)
 
-@app.route('/thermo_central_db')
-def thermo_central_db():
-    
-    total_mol_count = registration_table.count()
-
-    # get a dict of molecules with count
-    aggreg_pipeline=[{"$group": {"_id": "$radical_number", "count": {"$sum": 1}}},
-                    {"$sort": SON([("count", -1)])}]
-    radical_count_list = []
-    for record in registration_table.aggregate(aggreg_pipeline):
-        radical = record['_id']
-        count = record['count']
-        radical_count_list.append((radical, count))
-
-    # get a dict of users with count
-    aggreg_pipeline=[{"$group": {"_id": "$user", "count": {"$sum": 1}}},
-                    {"$sort": SON([("count", -1)])}]
-    user_count_list = []
-    for record in registration_table.aggregate(aggreg_pipeline):
-        user = record['_id']
-        count = record['count']
-        user_count_list.append((user, count))
-
-    # get a dict of applications with count
-    aggreg_pipeline=[{"$group": {"_id": "$application", "count": {"$sum": 1}}},
-                    {"$sort": SON([("count", -1)])}]
-    application_count_list = []
-    for record in registration_table.aggregate(aggreg_pipeline):
-        application = record['_id']
-        count = record['count']
-        application_count_list.append((application, count))
-
-    # get analysis result
-    total_ringcore_count = saturated_ringcore_table.count()
-    top_ringcore_counts = list(saturated_ringcore_table.find().sort([('count', -1)]).limit(4))
-    ringcore_count_list = []
-    for ringcore_count in top_ringcore_counts:
-        ringcore = str(ringcore_count['aug_inchi'])
-        draw_molecule_from_aug_inchi(ringcore)
-        count = ringcore_count['count']
-        timestamp = ringcore_count['timestamp']
-        ringcore_count_list.append((ringcore, count, timestamp))
-
-    # user-application stats
-    aggreg_pipeline=[{"$group": 
-                   {"_id": 
-                        {"application":"$application",
-                        "user":"$user"}, 
-                    "count": 
-                        {"$sum": 1}
-                   }
-              },
-             {"$sort": SON([("count", -1)])}]
-    user_application_count_list = []
-    for record in registration_table.aggregate(aggreg_pipeline):
-        application = record['_id']['application']
-        user = record['_id']['user']
-        count = record['count']
-        user_application_count_list.append((user, application, count))
-
-    return render_template('thermo_central_db.html', 
-                            total_mol_count=total_mol_count, 
-                            total_ringcore_count=total_ringcore_count,
-                            radical_count_list=radical_count_list,
-                            user_count_list=user_count_list,
-                            application_count_list=application_count_list,
-                            ringcore_count_list=ringcore_count_list,
-                            user_application_count_list=user_application_count_list,
-                            time=datetime.datetime.fromtimestamp(int(timestamp)).strftime('%d/%m/%Y: %H:%M:%S'))
-
 @app.route('/predictor_performance')
 def predictor_performance():
 
@@ -234,7 +154,7 @@ def thermo_estimation():
         try:
             mol = Molecule(SMILES=molecule_smiles)
             aug_inchi = mol.toAugmentedInChI()
-            draw_molecule_from_aug_inchi(aug_inchi)
+            draw_molecule_from_aug_inchi(aug_inchi, app.config["MOLECULE_IMAGES"])
         except:
             return render_template('thermo_estimation.html')
         
@@ -246,12 +166,6 @@ def thermo_estimation():
     else:
 
         return render_template('thermo_estimation.html')
-
-def draw_molecule_from_aug_inchi(aug_inchi):
-    molecule = Molecule().fromAugmentedInChI(aug_inchi)
-    path = os.path.join(app.config['MOLECULE_IMAGES'], '{0}.svg'.format(aug_inchi.replace('/', '_slash_')))
-    if not os.path.exists(path):
-        molecule.draw(path)
 
 def get_db():
     db = getattr(g, '_database', None)
