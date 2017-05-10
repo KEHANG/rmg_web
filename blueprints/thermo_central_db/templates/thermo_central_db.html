@@ -128,7 +128,7 @@ Thermo Central Database
               <div class="ibox-content">
                   <div class="row">
                       <div class="col-xs-6">
-                          <img src="/static/img/{{aug_inchi | replace('/', '_slash_')}}.svg">
+                          <img src="{{url_for('thermo_central_db.static', filename='img')}}/{{aug_inchi | replace('/', '_slash_')}}.svg">
                       </div>
                       <div class="col-xs-6">
                           <small class="stats-label">Present in</small>

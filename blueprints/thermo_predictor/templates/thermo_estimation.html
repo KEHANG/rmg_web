@@ -54,7 +54,7 @@ Thermo Estimation
           <div class="ibox-content">
               <div class="row">
                   <div class="col-md-6">
-                      <img src="static/img/{{aug_inchi | replace('/', '_slash_')}}.svg">
+                      <img src="{{url_for('thermo_predictor.static', filename='img')}}/{{aug_inchi | replace('/', '_slash_')}}.svg">
                   </div>
                   <div class="col-md-6">
                       <div class="font-bold text-info"><small>Molecular ConvNet</small></div>

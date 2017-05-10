@@ -9,7 +9,8 @@ from blueprints.utils import draw_molecule_from_aug_inchi
 
 thermo_central_db = Blueprint('thermo_central_db', __name__,
                         	template_folder='templates',
-                        	static_folder='./static')
+                        	static_folder='./static',
+                            static_url_path='/blueprints/thermo_central_db/static')
 
 # thermo central database setup
 host, port, username, password = getTCDAuthenticationInfo()

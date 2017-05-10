@@ -7,7 +7,8 @@ from blueprints.utils import connect_to_PPD, draw_molecule_from_aug_inchi
 
 thermo_predictor = Blueprint('thermo_predictor', __name__,
                         	template_folder='templates',
-                            static_folder='./static')
+                            static_folder='./static',
+                            static_url_path='/blueprints/thermo_predictor/static')
 
 # access predictor performance db
 ppd_client = connect_to_PPD()
