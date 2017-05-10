@@ -19,7 +19,7 @@ app.config["MOLECULE_IMAGES"] = 'static/img'
 
 okCmds = frozenset(["python"])
 
-@app.route('/<cmd>/<script>/')
+#@app.route('/<cmd>/<script>/')
 def runCmd(cmd, script):
 
     if cmd in okCmds:

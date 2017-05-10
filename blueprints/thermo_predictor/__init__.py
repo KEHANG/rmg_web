@@ -15,28 +15,8 @@ predictorPerformanceDB =  getattr(ppd_client, 'predictor_performance')
 molconv_performance_table = getattr(predictorPerformanceDB, 'molconv_performance_table')
 
 
-@thermo_predictor.route('/performance')
+@thermo_predictor.route('/performance', methods=['GET', 'POST'])
 def performance():
-
-    latest_molconv_performance = list(molconv_performance_table.find().sort([('timestamp', -1)]).limit(1))[0]
-    small_cyclic_performance = [latest_molconv_performance['small_cyclic_table']]
-    large_linear_polycyclic_performance = [latest_molconv_performance['large_linear_polycyclic_table']]
-    large_fused_polycyclic_performance = [latest_molconv_performance['large_fused_polycyclic_table']]
-
-    small_O_only_polycyclic_performance = [latest_molconv_performance['small_O_only_polycyclic_table']]
-    large_linear_O_only_polycyclic_performance = [latest_molconv_performance['large_linear_O_only_polycyclic_table']]
-    large_fused_O_only_polycyclic_performance = [latest_molconv_performance['large_fused_O_only_polycyclic_table']]
-
-    return render_template('predictor_performance.html',
-                            small_cyclic_performance=small_cyclic_performance,
-                            large_linear_polycyclic_performance=large_linear_polycyclic_performance,
-                            large_fused_polycyclic_performance=large_fused_polycyclic_performance,
-                            small_O_only_polycyclic_performance=small_O_only_polycyclic_performance,
-                            large_linear_O_only_polycyclic_performance=large_linear_O_only_polycyclic_performance,
-                            large_fused_O_only_polycyclic_performance=large_fused_O_only_polycyclic_performance)
-
-@thermo_predictor.route('/thermo_estimation', methods=['GET', 'POST'])
-def thermo_estimation():
     if request.method == 'POST':
         molecule_smiles = str(request.form['molecule_smiles'])
         try:
