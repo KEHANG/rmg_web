@@ -7,3 +7,6 @@
 data/pdd_scratch_add20/*
 
 temp/*
+
+# generated image files
+InChI*.svg
