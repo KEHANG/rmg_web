@@ -16,7 +16,7 @@ molconv_performance_table = getattr(predictorPerformanceDB, 'molconv_performance
 
 
 @thermo_predictor.route('/estimation', methods=['GET', 'POST'])
-def performance():
+def estimation():
     if request.method == 'POST':
         molecule_smiles = str(request.form['molecule_smiles'])
         try:
