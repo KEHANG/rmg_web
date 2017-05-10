@@ -1,5 +1,7 @@
 import os
 
+from rmgpy.molecule import Molecule
+
 def getPPDAuthenticationInfo():
 
 	try:
@@ -34,3 +36,9 @@ def connect_to_PPD():
 		print("\nConnection failure to Predictor Performance Database...")
 		print("Predictor Performance Page may fail.\n")
 		return None
+
+def draw_molecule_from_aug_inchi(aug_inchi, path):
+    molecule = Molecule().fromAugmentedInChI(aug_inchi)
+    path = os.path.join(path, '{0}.svg'.format(aug_inchi.replace('/', '_slash_')))
+    if not os.path.exists(path):
+        molecule.draw(path)
