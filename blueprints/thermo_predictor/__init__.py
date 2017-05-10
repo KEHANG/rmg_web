@@ -15,7 +15,7 @@ predictorPerformanceDB =  getattr(ppd_client, 'predictor_performance')
 molconv_performance_table = getattr(predictorPerformanceDB, 'molconv_performance_table')
 
 
-@thermo_predictor.route('/thermo_estimation', methods=['GET', 'POST'])
+@thermo_predictor.route('/thermoestimation', methods=['GET', 'POST'])
 def performance():
     if request.method == 'POST':
         molecule_smiles = str(request.form['molecule_smiles'])
