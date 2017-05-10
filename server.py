@@ -5,9 +5,6 @@ import time
 import subprocess
 import psycopg2
 from werkzeug import secure_filename
-from rmgpy.molecule import Molecule
-from blueprints.utils import draw_molecule_from_aug_inchi
-from thermo_predictor import h298_predictor
 from blueprints.thermo_central_db import thermo_central_db
 from blueprints.thermo_predictor import thermo_predictor
 
@@ -123,26 +120,6 @@ def recent_jobs():
     print recent_jobs_list_selected
     cur.close()
     return jsonify(jobs=recent_jobs_list_selected)
-
-@app.route('/thermo_estimation', methods=['GET', 'POST'])
-def thermo_estimation():
-    if request.method == 'POST':
-        molecule_smiles = str(request.form['molecule_smiles'])
-        try:
-            mol = Molecule(SMILES=molecule_smiles)
-            aug_inchi = mol.toAugmentedInChI()
-            draw_molecule_from_aug_inchi(aug_inchi, app.config["MOLECULE_IMAGES"])
-        except:
-            return render_template('thermo_estimation.html')
-        
-        thermo_result = h298_predictor.predict(mol)
-        return render_template('thermo_estimation.html', 
-                                thermo_result=thermo_result,
-                                molecule_smiles=molecule_smiles,
-                                aug_inchi=aug_inchi)
-    else:
-
-        return render_template('thermo_estimation.html')
 
 def get_db():
     db = getattr(g, '_database', None)
