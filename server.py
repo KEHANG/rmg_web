@@ -6,24 +6,21 @@ import subprocess
 import psycopg2
 from werkzeug import secure_filename
 from rmgpy.molecule import Molecule
-from blueprints.utils import connect_to_PPD, draw_molecule_from_aug_inchi
+from blueprints.utils import draw_molecule_from_aug_inchi
 from thermo_predictor import h298_predictor
 from blueprints.thermo_central_db import thermo_central_db
+from blueprints.thermo_predictor import thermo_predictor
 
 
 ALLOWED_EXTENSIONS = set(['py'])
 app = Flask(__name__)
 app.register_blueprint(thermo_central_db, url_prefix='/thermo_central_db')
+app.register_blueprint(thermo_predictor, url_prefix='/thermo_predictor')
 
 app.config["UPLOAD_FOLDER"] = 'temp'
 app.config["MOLECULE_IMAGES"] = 'static/img'
 
 okCmds = frozenset(["python"])
-
-# access predictor performance db
-ppd_client = connect_to_PPD()
-predictorPerformanceDB =  getattr(ppd_client, 'predictor_performance')
-molconv_performance_table = getattr(predictorPerformanceDB, 'molconv_performance_table')
 
 @app.route('/<cmd>/<script>/')
 def runCmd(cmd, script):
@@ -126,26 +123,6 @@ def recent_jobs():
     print recent_jobs_list_selected
     cur.close()
     return jsonify(jobs=recent_jobs_list_selected)
-
-@app.route('/predictor_performance')
-def predictor_performance():
-
-    latest_molconv_performance = list(molconv_performance_table.find().sort([('timestamp', -1)]).limit(1))[0]
-    small_cyclic_performance = [latest_molconv_performance['small_cyclic_table']]
-    large_linear_polycyclic_performance = [latest_molconv_performance['large_linear_polycyclic_table']]
-    large_fused_polycyclic_performance = [latest_molconv_performance['large_fused_polycyclic_table']]
-
-    small_O_only_polycyclic_performance = [latest_molconv_performance['small_O_only_polycyclic_table']]
-    large_linear_O_only_polycyclic_performance = [latest_molconv_performance['large_linear_O_only_polycyclic_table']]
-    large_fused_O_only_polycyclic_performance = [latest_molconv_performance['large_fused_O_only_polycyclic_table']]
-
-    return render_template('predictor_performance.html',
-                            small_cyclic_performance=small_cyclic_performance,
-                            large_linear_polycyclic_performance=large_linear_polycyclic_performance,
-                            large_fused_polycyclic_performance=large_fused_polycyclic_performance,
-                            small_O_only_polycyclic_performance=small_O_only_polycyclic_performance,
-                            large_linear_O_only_polycyclic_performance=large_linear_O_only_polycyclic_performance,
-                            large_fused_O_only_polycyclic_performance=large_fused_O_only_polycyclic_performance)
 
 @app.route('/thermo_estimation', methods=['GET', 'POST'])
 def thermo_estimation():
