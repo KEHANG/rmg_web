@@ -7,12 +7,14 @@ import psycopg2
 from werkzeug import secure_filename
 from blueprints.thermo_central_db import thermo_central_db
 from blueprints.thermo_predictor import thermo_predictor
+from blueprints.autoQM import autoQM
 
 
 ALLOWED_EXTENSIONS = set(['py'])
 app = Flask(__name__)
 app.register_blueprint(thermo_central_db, url_prefix='/thermo_central_db')
 app.register_blueprint(thermo_predictor, url_prefix='/thermo_predictor')
+app.register_blueprint(autoQM, url_prefix='/autoqm')
 
 app.config["UPLOAD_FOLDER"] = 'temp'
 app.config["MOLECULE_IMAGES"] = 'static/img'
