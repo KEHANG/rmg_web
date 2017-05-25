@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}
+autoQM | Dashboard 
+{% endblock %}
+
+{% block page_title %}
+autoQM
+{% endblock %}
+
+{% block active_page %}
+autoQM
+{% endblock %}
+
+                   
+{% block content %}
+<!-- Row 1 -->
+<div class="row">
+<!-- Column 1 in Row 1
+ -->
+  <div class="col-md-7">
+  <!-- row 1 in Column 1 -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                	<span class="label label-success pull-right">Polycyclic core</span>
+                    <h5>Finished jobs</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                      <div class="col-md-6">
+                          <h1 class="no-margins">{{off_queue}}</h1>
+                          <small>Processed</small>
+                      </div>
+                      <div class="col-md-6">
+                      		{% set percent = (off_queue / (off_queue+on_queue+pending)) |round(3) * 100 %}
+	                        <h2>{{percent}} %</h2>
+	                        <div class="progress progress-mini">
+	                            <div style="width: {{percent}}%;" class="progress-bar"></div>
+	                        </div>
+
+	                        <div class="m-t-sm small">Update on {{time}}</div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      </div>
+    
+      <!-- row 2 in Column 1 -->
+       <div class="row">
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                	<span class="label label-success pull-right">Polycyclic core</span>
+                    <h5>On Queue</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                      <div class="col-md-4">
+                          <h1 class="no-margins">{{running}}</h1>
+                          <small>Running</small>
+                      </div>
+                      <div class="col-md-4">
+                          <h1 class="no-margins">{{launched}}</h1>
+                          <small>Launched</small>
+                      </div>
+                      <div class="col-md-4">
+                          <h1 class="no-margins">{{created}}</h1>
+                          <small>Created</small>
+                      </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+
+     </div>
+
+      <!-- Column 2 -->
+    <div class="col-md-5">
+          <div class="ibox float-e-margins">
+              <div class="ibox-title">
+                  <h5>Proudly working on now</h5> 
+                  <small class="pull-right"><i class="fa fa-clock-o"> </i>
+                            Update on {{time}}
+                  </small>
+              </div>
+              {% for aug_inchi, count in molecule_samples%}
+              <div class="ibox-content">
+                  <div class="row">
+                      <div class="col-xs-6">
+                          <img src="{{url_for('autoQM.static', filename='img')}}/{{aug_inchi | replace('/', '_slash_')}}.svg">
+                      </div>
+                      <div class="col-xs-6">
+                          <small class="stats-label">Present in</small>
+                          <h5>{{count}} <small>molecules</small></h5>
+                      </div>
+                  </div>
+              </div>
+              {%endfor%}
+          </div>
+      </div>
+</div>
+{% endblock%}
