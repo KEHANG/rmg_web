@@ -2,10 +2,9 @@ import datetime
 from bson.son import SON
 from flask import Blueprint, render_template
 
-from rmgpy.data.thermoTest import getTCDAuthenticationInfo
 from rmgpy.data.thermo import ThermoCentralDatabaseInterface
 
-from blueprints.utils import draw_molecule_from_aug_inchi
+from blueprints.utils import draw_molecule_from_aug_inchi, getTCDAuthenticationInfo
 
 thermo_central_db = Blueprint('thermo_central_db', __name__,
                         	template_folder='templates',
