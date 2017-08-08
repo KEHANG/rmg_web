@@ -29,4 +29,3 @@ def load_cnn_thermo_predictor(thermo_predictor_model='zb_biycyclics_t.r.0.5'):
 
 	return h298_predictor
 
-h298_predictor = load_cnn_thermo_predictor()

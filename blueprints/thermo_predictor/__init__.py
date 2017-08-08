@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request
 
 from rmgpy.molecule import Molecule
 
-from thermo_predictor_utils import h298_predictor
+from thermo_predictor_utils import load_cnn_thermo_predictor
 from blueprints.utils import connect_to_PPD, draw_molecule_from_aug_inchi
 
 thermo_predictor = Blueprint('thermo_predictor', __name__,
@@ -15,6 +15,8 @@ ppd_client = connect_to_PPD()
 predictorPerformanceDB =  getattr(ppd_client, 'predictor_performance')
 molconv_performance_table = getattr(predictorPerformanceDB, 'molconv_performance_table')
 
+# create predictor instance
+h298_predictor = load_cnn_thermo_predictor()
 
 @thermo_predictor.route('/performance')
 def performance():
