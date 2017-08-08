@@ -44,3 +44,4 @@ dependencies:
   - rmg::keras
   - flask
   - psycopg2
+  - scikit-learn
