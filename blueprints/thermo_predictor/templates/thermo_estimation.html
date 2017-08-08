@@ -63,6 +63,22 @@ Thermo Estimation
                   </div>
               </div>
           </div>
+
+          <div class="ibox-title">
+              <div class="col-md-6">
+                <h5>Nearest Neighbours</h5>
+              </div>
+          </div>
+
+          <div class="ibox-content">
+              <div class="row">
+              {% for nb in range(4)%}
+                  <div class="col-md-3">
+                      <img src="{{url_for('thermo_predictor.static', filename='img')}}/{{aug_inchi | replace('/', '_slash_')}}_nb{{nb}}.svg">
+                  </div>
+              {% endfor %}
+              </div>
+          </div>
       </div>
   </div>
 </div>
