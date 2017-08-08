@@ -1,12 +1,16 @@
+import os
+import numpy as np
+from keras.models import Model
 from flask import Blueprint, render_template, request
 
 from rmgpy.molecule import Molecule
+from rmgpy.cnn_framework.molecule_tensor import get_molecule_tensor, pad_molecule_tensor
 
-from thermo_predictor_utils import load_cnn_thermo_predictor
 from blueprints.utils import connect_to_PPD, draw_molecule_from_aug_inchi
+from thermo_predictor_utils import load_cnn_thermo_predictor, load_nearest_neighbours
 
 thermo_predictor = Blueprint('thermo_predictor', __name__,
-                        	template_folder='templates',
+                            template_folder='templates',
                             static_folder='./static',
                             static_url_path='/blueprints/thermo_predictor/static')
 
@@ -17,6 +21,10 @@ molconv_performance_table = getattr(predictorPerformanceDB, 'molconv_performance
 
 # create predictor instance
 h298_predictor = load_cnn_thermo_predictor()
+molconv_model = Model(input=h298_predictor.model.input,
+                    output=h298_predictor.model.layers[0].output)
+
+nbrs, training_smis = load_nearest_neighbours(h298_predictor.datasets, molconv_model)
 
 @thermo_predictor.route('/performance')
 def performance():
@@ -46,6 +54,19 @@ def thermo_estimation():
             mol = Molecule(SMILES=molecule_smiles)
             aug_inchi = mol.toAugmentedInChI()
             draw_molecule_from_aug_inchi(aug_inchi, thermo_predictor.static_folder + '/img')
+
+            # sort out the nearest neighbours
+            moltensor = pad_molecule_tensor(get_molecule_tensor(mol), 20)
+            fp = molconv_model.predict(np.array([moltensor]))
+
+            distances, indices = nbrs.kneighbors(fp)
+            for i, mol_idx in enumerate(indices[0][:4]):
+                smi = training_smis[mol_idx]
+                mol_nb = Molecule(SMILES=smi)
+                path = os.path.join(thermo_predictor.static_folder,
+                                    'img',
+                                    aug_inchi.replace('/', '_slash_')+'_nb{0}.svg'.format(i))
+                mol_nb.draw(path)
         except:
             return render_template('thermo_estimation.html')
         
