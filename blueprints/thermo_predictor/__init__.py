@@ -137,17 +137,17 @@ def thermo_estimation():
             draw_molecule_from_aug_inchi(aug_inchi, thermo_predictor.static_folder + '/img')
 
             # sort out the nearest neighbours
-            moltensor = pad_molecule_tensor(get_molecule_tensor(mol), 20)
-            fp = molconv_model.predict(np.array([moltensor]))
+            # moltensor = pad_molecule_tensor(get_molecule_tensor(mol), 25)
+            # fp = molconv_model.predict(np.array([moltensor]))
 
-            distances, indices = nbrs.kneighbors(fp)
-            for i, mol_idx in enumerate(indices[0][:4]):
-                smi = training_smis[mol_idx]
-                mol_nb = Molecule(SMILES=smi)
-                path = os.path.join(thermo_predictor.static_folder,
-                                    'img',
-                                    aug_inchi.replace('/', '_slash_')+'_nb{0}.svg'.format(i))
-                mol_nb.draw(path)
+            # distances, indices = nbrs.kneighbors(fp)
+            # for i, mol_idx in enumerate(indices[0][:4]):
+            #     smi = training_smis[mol_idx]
+            #     mol_nb = Molecule(SMILES=smi)
+            #     path = os.path.join(thermo_predictor.static_folder,
+            #                         'img',
+            #                         aug_inchi.replace('/', '_slash_')+'_nb{0}.svg'.format(i))
+            #     mol_nb.draw(path)
         except:
             return render_template('thermo_estimation.html')
         
