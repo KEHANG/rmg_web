@@ -42,7 +42,7 @@ def load_nearest_neighbours(datasets,
     datasets = datasets
 
     training_smis = []
-    for db, table, _ in datasets:
+    for _, db, table, _ in datasets:
         training_example_meta_file = os.path.join(thermo_predictor_data,
                                             'predictor_models',
                                            thermo_predictor_model,

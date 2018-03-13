@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}
+Thermo Estimator Performance | Dashboard 
+{% endblock %}
+
+{% block page_title %}
+Thermo Estimator Performance
+{% endblock %}
+
+{% block active_page %}
+Thermo Estimator Performance
+{% endblock %}
+
+                   
+{% block content %}
+<div class="row">
+<div class="col-md-12">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content text p-md">
+            <div class="row">
+                <div class="col-md-4">
+                    {% if target == "Hf298" %}
+                    <h3>Heat of Formation</h3>
+                    <h6>unit: kcal/mol</h6>
+                    {% elif target == "S298" %}
+                    <h3>Entropy</h3>
+                    <h6>unit: cal/mol/K</h6>
+                    {% elif target == "Cp" %}
+                    <h3>Heat Capacity</h3>
+                    <h6>unit: cal/mol/K</h6>
+                    {% endif %}
+                    <h6>update: {{meta_dict["date"][:10]}}</h6>
+                </div>
+                <div class="col-md-4">
+                    <h4>RMG-Py</h4>
+                    <h6>branch: {{meta_dict["rmgpy_branch"]}}</h6>
+                    <h6>sha: {{meta_dict["rmgpy_sha"][:8]}}</h6>
+                </div>
+                <div class="col-md-4">
+                    <h4>RMG-database</h4>
+                    <h6>branch: {{meta_dict["rmgdb_branch"]}}</h6>
+                    <h6>sha: {{meta_dict["rmgdb_sha"][:8]}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% for row in row_names %}
+<div class="row">
+    {% for column in column_names %}
+    <div class="col-md-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <span class="label label-primary pull-right">{{row}}</span>
+                <h5>{{column}}</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    {% for key, value in performance_dict[row][column].iteritems()%}
+                        {% if value %}
+                        <div class="col-md-6">
+                            <div class="font-bold text-success"><small>{{key}}</small></div>
+                            <h1 class="no-margins">{{ value['MAE'] | round(2)}}</h1>
+                            <h6>cnt: {{value['count']}}</h6>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+
+{% endblock %}   
+            
