@@ -25,9 +25,10 @@ h298_predictor = load_cnn_thermo_predictor(thermo_predictor_name)
 molconv_model = Model(input=h298_predictor.model.input,
                     output=h298_predictor.model.layers[0].output)
 
-nbrs, training_smis = load_nearest_neighbours(h298_predictor.datasets, molconv_model)
+# nbrs, training_smis = load_nearest_neighbours(h298_predictor.datasets, 
+#                                               molconv_model,
+#                                               thermo_predictor_name)
 
-@thermo_predictor.route('/performance')
 @thermo_predictor.route('/cyclic_performance')
 def performance():
 
