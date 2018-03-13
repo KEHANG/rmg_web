@@ -43,3 +43,4 @@ dependencies:
   - flask
   - psycopg2
   - scikit-learn
+  - pyrdl
